@@ -1,6 +1,6 @@
-import React from 'react';
+import React from "react";
 const person = {
-  name: "Mosh", 
+  name: "Mosh",
   walk: function() {},
   talk() {}
 };
@@ -23,18 +23,18 @@ const color = ["red", "yellow", "green"];
 color.map(color => `<li>${color}</li>`);
 
 const address = {
-    street:'',
-    city:''
+  street: "",
+  city: ""
 };
-const {street,city} = address;
+const { street, city } = address;
 // => const street = address.street
 
-// use alias to rename the property
-const {steet:st} = address;
+// use alias to rename the property
+const { steet: st } = address;
 
 // spread operator '...'
 // Use spread operator to combine arrays
-const first =[1, 2, 3];
+const first = [1, 2, 3];
 const secont = [4, 5, 6];
 // traditional combining method:
 const combined = first.concat(secont);
@@ -42,9 +42,9 @@ const combined = first.concat(secont);
 const combined = [...first, ...second];
 
 // Use spread operator to combine Objects
-const first = {name:'Mash'};
-const second = {location:'Melbourne'};
-const second = {...first,...second, country:'Australia' };
+const first = { name: "Mash" };
+const second = { location: "Melbourne" };
+const second = { ...first, ...second, country: "Australia" };
 
 // Use spread opertaor to copy
-const copy = {...first};
+const copy = { ...first };
