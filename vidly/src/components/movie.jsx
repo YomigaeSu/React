@@ -20,9 +20,9 @@ class Movie extends Component {
               console.log("Delete", id);
               return onDelete(id);
             }}
-            className="btn btn-warning btn-small m-2"
+            className="btn btn-danger btn-small"
           >
-            delete
+            Delete
           </button>
         </td>
       </tr>
