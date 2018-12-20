@@ -1,15 +1,12 @@
 import React, { Component } from "react";
 import { getMovies, deleteMovie } from "../services/fakeMovieService";
+import LikeButton from "./likeButton";
 // import Movie from "./movie";
 
 class Movies extends Component {
   state = {
     movies: getMovies()
   };
-
-  // When {Movie} button:onClick
-  // ->onDelete({Movie}.props.id)
-  // ->{Movies}handleDelete(Movie.props.id)
   handleDelete = movieId => {
     deleteMovie(movieId);
     const movies = getMovies();
@@ -19,6 +16,14 @@ class Movies extends Component {
 
   getMovieCount = () => {
     return getMovies().length;
+  };
+
+  handleLike = movie => {
+    const movies = [...this.state.movies];
+    const index = movies.indexOf(movie);
+    movies[index] = { ...movies[index] };
+    movies[index].liked = !movies[index].liked;
+    this.setState({ movies });
   };
 
   render() {
@@ -35,6 +40,7 @@ class Movies extends Component {
                 <th>Stock</th>
                 <th>Rate</th>
                 <th />
+                <th />
               </tr>
             </thead>
             <tbody>
@@ -44,6 +50,12 @@ class Movies extends Component {
                   <td>{movie.genre.name}</td>
                   <td>{movie.numberInStock}</td>
                   <td>{movie.dailyRentalRate}</td>
+                  <td>
+                    <LikeButton
+                      liked={movie.liked}
+                      onClick={() => this.handleLike(movie)}
+                    />
+                  </td>
                   <td>
                     <button
                       className="btn btn-danger btn-sm"
@@ -55,15 +67,6 @@ class Movies extends Component {
                     </button>
                   </td>
                 </tr>
-                // <Movie
-                //   key={movie._id}
-                //   id={movie._id}
-                //   title={movie.title}
-                //   genre={movie.genre}
-                //   stock={movie.numberInStock}
-                //   rate={movie.dailyRentalRate}
-                //   onDelete={this.handleDelete}
-                // />
               ))}
             </tbody>
           </table>
