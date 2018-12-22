@@ -21,9 +21,12 @@ const Pagination = props => {
             className={page === currentPage ? "page-item active" : "page-item"}
             key={page}
           >
-            <a className="page-link" onClick={() => onPageChange(page)}>
-              {page}
-            </a>
+            {
+              // eslint-disable-next-line
+              <a className="page-link" onClick={() => onPageChange(page)}>
+                {page}
+              </a>
+            }
           </li>
         ))}
       </ul>
