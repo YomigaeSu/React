@@ -13,7 +13,7 @@ class App extends Component {
     return (
       <div>
         <NavBar />
-        <div clasName="content">
+        <div className="content">
           <Switch>
             <Route path="/products/:id" component={ProductDetails} />
             <Route
@@ -22,7 +22,7 @@ class App extends Component {
             />
             <Route path="/posts/:year?/:month?" component={Posts} />
             <Route path="/admin" component={Dashboard} />
-            <Route path="/" component={Home} />
+            <Route path="/" exact component={Home} />
           </Switch>
         </div>
       </div>
