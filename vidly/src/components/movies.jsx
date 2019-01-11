@@ -7,6 +7,7 @@ import { paginate } from "../utils/paginate";
 import ListGroup from "./common/ListGroup";
 import MoviesTable from "./moviesTable";
 import _ from "lodash";
+import NavBar from "./navBar";
 // import Movie from "./movie";
 
 class Movies extends Component {
