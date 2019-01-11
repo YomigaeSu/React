@@ -1,5 +1,11 @@
 import React, { Component } from "react";
 class LoginForm extends Component {
+  state = {
+    account: {
+      username: "",
+      password: ""
+    }
+  };
   username = React.createRef();
 
   handleSubmit = e => {
@@ -7,6 +13,12 @@ class LoginForm extends Component {
 
     // Call the server
     console.log("Form submitted");
+  };
+
+  handleChange = e => {
+    const account = { ...this.state.account };
+    account.username = e.currentTarget.value;
+    this.setState({ account });
   };
   render() {
     return (
@@ -16,6 +28,8 @@ class LoginForm extends Component {
           <div className="form-group">
             <label htmlFor="username">Username</label>
             <input
+              onChange={this.handleChange}
+              value={this.state.account.username}
               autoFocus
               ref={this.username}
               id="username"
