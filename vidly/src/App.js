@@ -17,7 +17,7 @@ class App extends Component {
       <React.Fragment>
         <NavBar />
 
-        <main class="container">
+        <main className="container">
           <Switch>
             {/* without Switch, all address will be redirected to "/" */}
             <Route path="/login" component={LoginForm} />
