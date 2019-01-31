@@ -14,15 +14,24 @@ class LoginForm extends Component {
     e.preventDefault();
 
     const errors = this.validate();
-    this.setState({ errors });
+    this.setState({ errors: errors || {} });
+    // errors needs to be set, cannot be null
     if (errors) return;
 
     // Call the server
-    console.log("Form submitted.");
   };
 
   validate = () => {
-    return { username: "Username is required." };
+    const errors = {};
+    const { account } = this.state;
+    if (account.username.trim() === "") {
+      errors.username = "Username is required.";
+    }
+    if (account.password.trim() === "") {
+      errors.password = "Password is required.";
+    }
+
+    return Object.keys(errors).length === 0 ? null : errors;
   };
   handleChange = ({ currentTarget: input }) => {
     const account = { ...this.state.account };
@@ -30,7 +39,7 @@ class LoginForm extends Component {
     this.setState({ account });
   };
   render() {
-    const { account } = this.state;
+    const { account, errors } = this.state;
     return (
       <div>
         <h1>Login</h1>
@@ -40,12 +49,14 @@ class LoginForm extends Component {
             label="Username"
             value={account.username}
             onChange={this.handleChange}
+            error={errors.username}
           />
           <Input
             name="password"
             label="Password"
             value={account.password}
             onChange={this.handleChange}
+            error={errors.password}
           />
           {/* <div className="form-group">
             <label htmlFor="username">Username</label>
