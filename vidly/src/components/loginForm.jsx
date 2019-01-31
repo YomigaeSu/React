@@ -5,17 +5,25 @@ class LoginForm extends Component {
     account: {
       username: "",
       password: ""
-    }
+    },
+    errors: {}
   };
-  username = React.createRef();
+  //   username = React.createRef();
 
   handleSubmit = e => {
     e.preventDefault();
 
+    const errors = this.validate();
+    this.setState({ errors });
+    if (errors) return;
+
     // Call the server
-    console.log("Form submitted");
+    console.log("Form submitted.");
   };
 
+  validate = () => {
+    return { username: "Username is required." };
+  };
   handleChange = ({ currentTarget: input }) => {
     const account = { ...this.state.account };
     account[input.name] = input.value;
