@@ -12,8 +12,12 @@ class LoginForm extends Component {
   //   username = React.createRef();
 
   schema = {
-    username: Joi.string().required(),
-    password: Joi.string().required()
+    username: Joi.string()
+      .required()
+      .label("Username"),
+    password: Joi.string()
+      .required()
+      .label("Password")
   };
   //set the schema for Joi error validation
 
@@ -29,22 +33,14 @@ class LoginForm extends Component {
   };
 
   validate = () => {
-    const result = Joi.validate(this.state.account, this.schema, {
-      abortEarly: false
-    });
+    const option = { abortEarly: false };
+    const { error } = Joi.validate(this.state.account, this.schema, option);
     //Joi.validate(object to validate, schema);
-    console.log(result);
-
+    if (!error) return null;
+    //there is no error
     const errors = {};
-    const { account } = this.state;
-    if (account.username.trim() === "") {
-      errors.username = "Username is required.";
-    }
-    if (account.password.trim() === "") {
-      errors.password = "Password is required.";
-    }
-
-    return Object.keys(errors).length === 0 ? null : errors;
+    for (let item of error.details) errors[item.path[0]] = item.message;
+    return errors;
   };
 
   validateProperty = ({ name, value }) => {
