@@ -22,6 +22,7 @@ class DropList extends Component {
           id={name}
           name={name}
         >
+          <option />
           {items.map(item => (
             <option value={item} key={item}>
               {item}
@@ -34,10 +35,3 @@ class DropList extends Component {
 }
 
 export default DropList;
-
-// const DropList = () => {
-//   return (
-
-// };
-
-// export default DropList;

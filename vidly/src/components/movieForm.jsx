@@ -36,15 +36,18 @@ class MovieForm extends Form {
   };
 
   componentDidMount() {
-    const { title, genre, numberInStock, dailyRentalRate: rate } = getMovie(
-      this.props.match.params.id
-    );
-    const data = { ...this.state.data };
-    data.title = title;
-    data.genre = genre.name;
-    data.numberInStock = numberInStock;
-    data.rate = rate;
-    this.setState({ data });
+    const id = this.props.match.params.id;
+    if (id) {
+      const { title, genre, numberInStock, dailyRentalRate: rate } = getMovie(
+        id
+      );
+      const data = { ...this.state.data };
+      data.title = title;
+      data.genre = genre.name;
+      data.numberInStock = numberInStock;
+      data.rate = rate;
+      this.setState({ data });
+    }
   }
 
   doSubmit = e => {
@@ -85,20 +88,3 @@ class MovieForm extends Form {
 }
 
 export default MovieForm;
-// const MovieForm = ({ match, history }) => {
-//   return (
-//     <div>
-//       <h1>Movie Form {match.params.id}</h1>
-//       <button
-//         className="btn btn-primary"
-//         onClick={() => {
-//           history.push("/movies");
-//         }}
-//       >
-//         Save
-//       </button>
-//     </div>
-//   );
-// };
-
-// export default MovieForm;
