@@ -49,6 +49,7 @@ class Form extends Component {
     const data = { ...this.state.data };
     data[input.name] = input.value;
     this.setState({ data, errors });
+    console.log(this.validate());
   };
 
   renderDropList = (options, name, label) => {

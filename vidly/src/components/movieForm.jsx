@@ -7,7 +7,6 @@ import * as genreServiceAPI from "../services/fakeGenreService";
 class MovieForm extends Form {
   state = {
     data: {
-      _id: "",
       title: "",
       genreId: "",
       numberInStock: "",
@@ -49,18 +48,6 @@ class MovieForm extends Form {
     if (!movie) return this.props.history.replace("/not-found");
 
     this.setState({ data: this.mapToViewModel(movie) });
-    //   {
-    //     if (!getMovie(id)) this.props.history.push("/not-found");
-    //     else {
-    //       const { title, genreId, numberInStock, dailyRentalRate } = getMovie(id);
-    //       const data = { ...this.state.data };
-    //       data.title = title;
-    //       data.genreId = genre.name;
-    //       data.numberInStock = numberInStock;
-    //       data.dailyRentalRate = dailyRentalRate;
-    //       this.setState({ data });
-    //     }
-    //   }
   }
 
   mapToViewModel = movie => {
