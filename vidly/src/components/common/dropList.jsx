@@ -6,7 +6,6 @@ class DropList extends Component {
   };
   componentDidMount = () => {
     const { value } = this.props;
-    console.log(value);
     this.setState({ selectedValue: value });
   };
 

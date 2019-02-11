@@ -6,6 +6,7 @@ import Pagination from "./common/pagination";
 import { paginate } from "../utils/paginate";
 import ListGroup from "./common/ListGroup";
 import MoviesTable from "./moviesTable";
+
 import _ from "lodash";
 
 // import Movie from "./movie";
@@ -99,7 +100,13 @@ class Movies extends Component {
             />
           </div>
           <div className="col">
-            <button className="btn btn-primary">New Movie</button>
+            
+            <button
+              onClick={() => this.props.history.push("/movies/new")}
+              className="btn btn-primary"
+            >
+              New Movie
+            </button>
             <p>Showing {totalCount} movies in the database.</p>
             <MoviesTable
               movies={movies}

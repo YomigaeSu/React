@@ -1,8 +1,8 @@
 import React from "react";
 import Form from "./common/form";
 import Joi from "joi-browser";
-import { getMovie } from "../services/fakeMovieService";
-import { getGenres } from "../services/fakeGenreService";
+import { getMovie, saveMovie } from "../services/fakeMovieService";
+import { getGenres, getGenreByName } from "../services/fakeGenreService";
 
 class MovieForm extends Form {
   state = {
@@ -10,7 +10,7 @@ class MovieForm extends Form {
       title: "",
       genre: "",
       numberInStock: "",
-      rate: ""
+      dailyRentalRate: ""
     },
     errors: {}
   };
@@ -28,7 +28,7 @@ class MovieForm extends Form {
       .min(0)
       .max(100)
       .label("Number in Stock"),
-    rate: Joi.number()
+    dailyRentalRate: Joi.number()
       .required()
       .min(0)
       .max(10)
@@ -38,21 +38,26 @@ class MovieForm extends Form {
   componentDidMount() {
     const id = this.props.match.params.id;
     if (id) {
-      const { title, genre, numberInStock, dailyRentalRate: rate } = getMovie(
-        id
-      );
-      const data = { ...this.state.data };
-      data.title = title;
-      data.genre = genre.name;
-      data.numberInStock = numberInStock;
-      data.rate = rate;
-      this.setState({ data });
+      if (!getMovie(id)) this.props.history.push("/not-found");
+      else {
+        const { title, genre, numberInStock, dailyRentalRate } = getMovie(id);
+        const data = { ...this.state.data };
+        data.title = title;
+        data.genre = genre.name;
+        data.numberInStock = numberInStock;
+        data.dailyRentalRate = dailyRentalRate;
+        this.setState({ data });
+      }
     }
   }
 
   doSubmit = e => {
     // Call the server
-    console.log("Submitted");
+    let movie = { ...this.state.data };
+    const genre = getGenreByName(this.state.data.genre);
+    movie.genre = genre;
+    movie._id = this.props.match.params.id || "";
+    saveMovie(movie);
   };
 
   render() {
@@ -71,12 +76,13 @@ class MovieForm extends Form {
           {this.renderInput("title", "Title")}
           {this.renderDropList(genreOption, "genre", "Genre")}
           {this.renderInput("numberInStock", "Number in Stock")}
-          {this.renderInput("rate", "Rate")}
+          {this.renderInput("dailyRentalRate", "Rate")}
         </form>
         <button
           disabled={this.validate()}
           className="btn btn-primary"
           onClick={() => {
+            this.doSubmit();
             history.push("/movies");
           }}
         >
