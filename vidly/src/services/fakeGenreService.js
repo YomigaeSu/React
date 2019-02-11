@@ -7,7 +7,3 @@ export const genres = [
 export function getGenres() {
   return genres.filter(g => g);
 }
-
-export function getGenreByName(name) {
-  return genres.find(g => g.name === name);
-}

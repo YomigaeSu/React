@@ -51,11 +51,11 @@ class Form extends Component {
     this.setState({ data, errors });
   };
 
-  renderDropList = (items, name, label) => {
+  renderDropList = (options, name, label) => {
     const { data, errors } = this.state;
     return (
       <DropList
-        items={items}
+        options={options}
         name={name}
         label={label}
         value={data[name]}
