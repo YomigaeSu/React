@@ -20,6 +20,7 @@ class Movies extends Component {
     pageSize: 4,
     currentPage: 1,
     selectedGenre: null,
+    searchTerm: "",
     sortColumn: { path: "title", order: "asc" }
   };
 
@@ -52,10 +53,16 @@ class Movies extends Component {
 
   handleFilterItems = filter => {
     this.setState({ selectedGenre: filter, currentPage: 1 });
+    this.setState({ searchTerm: "" });
   };
 
   handleSort = sortColumn => {
     this.setState({ sortColumn });
+  };
+
+  handleSearchChange = ({ currentTarget: input }) => {
+    this.setState({ searchTerm: input.value });
+    this.setState({ selectedGenre: { name: "All Genres", _id: "" } });
   };
 
   getPagedData() {
@@ -63,14 +70,22 @@ class Movies extends Component {
       pageSize,
       currentPage,
       selectedGenre,
+      searchTerm,
       sortColumn,
       movies: allMovies
     } = this.state;
 
-    const filteredMovies =
-      selectedGenre && selectedGenre._id
-        ? allMovies.filter(m => m.genre._id === selectedGenre._id)
-        : allMovies;
+    let filteredMovies = {};
+    if (searchTerm) {
+      filteredMovies = allMovies.filter(m =>
+        m.title.match(new RegExp(searchTerm, "i"))
+      );
+    } else {
+      filteredMovies =
+        selectedGenre && selectedGenre._id
+          ? allMovies.filter(m => m.genre._id === selectedGenre._id)
+          : allMovies;
+    }
 
     const sortedMovies = _.orderBy(
       filteredMovies,
@@ -86,7 +101,7 @@ class Movies extends Component {
   render() {
     // Extract all state
 
-    const { pageSize, currentPage, sortColumn } = this.state;
+    const { pageSize, currentPage, sortColumn, searchTerm } = this.state;
     const { length: moviesCount } = this.state.movies;
 
     const { movies, totalCount } = this.getPagedData();
@@ -111,6 +126,12 @@ class Movies extends Component {
               New Movie
             </Link>
             <p>Showing {totalCount} movies in the database.</p>
+            <input
+              value={searchTerm}
+              onChange={this.handleSearchChange}
+              placeholder="Search..."
+              className="form-control"
+            />
             <MoviesTable
               movies={movies}
               onLike={this.handleLike}
