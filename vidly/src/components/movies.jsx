@@ -10,6 +10,7 @@ import MoviesTable from "./moviesTable";
 import { Link } from "react-router-dom";
 
 import _ from "lodash";
+import SearchBox from "./common/searchBox";
 
 // import Movie from "./movie";
 
@@ -51,18 +52,16 @@ class Movies extends Component {
     this.setState({ currentPage: page });
   };
 
-  handleFilterItems = filter => {
-    this.setState({ selectedGenre: filter, currentPage: 1 });
-    this.setState({ searchTerm: "" });
+  handleFilterItems = genre => {
+    this.setState({ selectedGenre: genre, searchTerm: "", currentPage: 1 });
   };
 
   handleSort = sortColumn => {
     this.setState({ sortColumn });
   };
 
-  handleSearchChange = ({ currentTarget: input }) => {
-    this.setState({ searchTerm: input.value });
-    this.setState({ selectedGenre: { name: "All Genres", _id: "" } });
+  handleSearchChange = query => {
+    this.setState({ searchTerm: query, selectedGenre: null, currentPage: 1 });
   };
 
   getPagedData() {
@@ -77,8 +76,9 @@ class Movies extends Component {
 
     let filteredMovies = {};
     if (searchTerm) {
-      filteredMovies = allMovies.filter(m =>
-        m.title.match(new RegExp(searchTerm, "i"))
+      filteredMovies = allMovies.filter(
+        m => m.title.match(new RegExp(searchTerm, "i"))
+        // m.title.toLowerCase().startsWith(searchTerm.toLowerCase())
       );
     } else {
       filteredMovies =
@@ -126,12 +126,7 @@ class Movies extends Component {
               New Movie
             </Link>
             <p>Showing {totalCount} movies in the database.</p>
-            <input
-              value={searchTerm}
-              onChange={this.handleSearchChange}
-              placeholder="Search..."
-              className="form-control"
-            />
+            <SearchBox value={searchTerm} onChange={this.handleSearchChange} />
             <MoviesTable
               movies={movies}
               onLike={this.handleLike}
