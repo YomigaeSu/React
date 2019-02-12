@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import "./App.css";
-
+import config from "./config.json";
 import axios from "axios";
 
 axios.interceptors.response.use(null, error => {
@@ -16,28 +16,26 @@ axios.interceptors.response.use(null, error => {
   return Promise.reject(error);
 });
 
-const apiEndPoint = "https://jsonplaceholder.typicode.com/posts";
-
 class App extends Component {
   state = {
     posts: []
   };
 
   async componentDidMount() {
-    const { data: posts } = await axios.get(apiEndPoint);
+    const { data: posts } = await axios.get(config.apiEndPoint);
     this.setState({ posts });
   }
 
   handleAdd = async () => {
     const obj = { title: "a", body: "b" };
-    const { data: post } = await axios.post(apiEndPoint, obj);
+    const { data: post } = await axios.post(config.apiEndPoint, obj);
     const posts = [post, ...this.state.posts];
     this.setState({ posts });
   };
 
   handleUpdate = async post => {
     post.title = "UPDATED";
-    await axios.put(apiEndPoint + "/" + post.id, post);
+    await axios.put(config.apiEndPoint + "/" + post.id, post);
     const posts = [...this.state.posts];
     const index = posts.indexOf(post);
     posts[index] = { ...post };
@@ -51,7 +49,7 @@ class App extends Component {
     this.setState({ posts });
 
     try {
-      await axios.delete(apiEndPoint + "/" + post.id);
+      await axios.delete(config.apiEndPoint + "/" + post.id);
     } catch (ex) {
       console.log("HANDLE DELETE CATCH BLOCK");
       if (ex.response && ex.response.status === 404) {
