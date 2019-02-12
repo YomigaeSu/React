@@ -3,6 +3,19 @@ import "./App.css";
 
 import axios from "axios";
 
+axios.interceptors.response.use(null, error => {
+  const expectedError =
+    error.response &&
+    error.response.status >= 400 &&
+    error.response.status < 500;
+  if (!expectedError) {
+    console.log("Logging the error", error);
+    alert("An unexpected error occurred.");
+  }
+
+  return Promise.reject(error);
+});
+
 const apiEndPoint = "https://jsonplaceholder.typicode.com/posts";
 
 class App extends Component {
@@ -33,17 +46,16 @@ class App extends Component {
 
   handleDelete = async post => {
     const originalPosts = this.state.posts;
+
     const posts = this.state.posts.filter(p => p.id !== post.id);
     this.setState({ posts });
+
     try {
       await axios.delete(apiEndPoint + "/" + post.id);
-      // throw new Error("");
-    } catch (exception) {
-      if (exception.response && exception.response.status === 404) {
+    } catch (ex) {
+      console.log("HANDLE DELETE CATCH BLOCK");
+      if (ex.response && ex.response.status === 404) {
         alert("This post has already been deleted.");
-      } else {
-        console.log("Logging the error", exception);
-        alert("An unexpected error occurred.");
       }
       this.setState({ posts: originalPosts });
     }
