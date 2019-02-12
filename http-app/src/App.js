@@ -1,7 +1,10 @@
 import React, { Component } from "react";
-import "./App.css";
 import config from "./config.json";
 import axios from "axios";
+import { ToastContainer } from "react-toastify";
+
+import "react-toastify/dist/ReactToastify.css";
+import "./App.css";
 
 axios.interceptors.response.use(null, error => {
   const expectedError =
