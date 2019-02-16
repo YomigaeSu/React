@@ -1,8 +1,8 @@
 import React from "react";
 import Form from "./common/form";
 import Joi from "joi-browser";
-import * as movieServiceAPI from "../services/fakeMovieService";
-import * as genreServiceAPI from "../services/fakeGenreService";
+import * as movieServiceAPI from "../services/movieService";
+import * as genreServiceAPI from "../services/genreService";
 
 class MovieForm extends Form {
   state = {
@@ -37,17 +37,20 @@ class MovieForm extends Form {
       .label("Daily Rental Rate")
   };
 
-  componentDidMount() {
-    const genres = genreServiceAPI.getGenres();
+  async componentDidMount() {
+    const { data: genres } = await genreServiceAPI.getGenres();
     this.setState({ genres });
 
     const movieId = this.props.match.params.id;
     if (movieId === "new") return;
 
-    const movie = movieServiceAPI.getMovie(movieId);
-    if (!movie) return this.props.history.replace("/not-found");
-
-    this.setState({ data: this.mapToViewModel(movie) });
+    try {
+      const { data: movie } = await movieServiceAPI.getMovie(movieId);
+      this.setState({ data: this.mapToViewModel(movie) });
+    } catch (ex) {
+      if (ex.response && ex.response.status === 404)
+        this.props.history.replace("/not-found");
+    }
   }
 
   mapToViewModel = movie => {
@@ -60,8 +63,8 @@ class MovieForm extends Form {
     };
   };
 
-  doSubmit = () => {
-    movieServiceAPI.saveMovie(this.state.data);
+  doSubmit = async () => {
+    await movieServiceAPI.saveMovie(this.state.data);
     this.props.history.push("/movies");
   };
 
