@@ -11,11 +11,13 @@ import LoginForm from "./components/loginForm";
 import RegisterForm from "./components/registerForm";
 
 import "./App.css";
+import { ToastContainer } from "react-toastify";
 
 class App extends Component {
   render() {
     return (
       <React.Fragment>
+        <ToastContainer />
         <NavBar />
 
         <main className="container">
