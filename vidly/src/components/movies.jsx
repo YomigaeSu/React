@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import { getMovies, deleteMovie } from "../services/fakeMovieService";
 import { getGenres } from "../services/fakeGenreService";
+// import { getGenres } from "../services/genreService";
 
 import Pagination from "./common/pagination";
 import { paginate } from "../utils/paginate";
