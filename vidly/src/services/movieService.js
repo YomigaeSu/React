@@ -18,16 +18,19 @@ export function deleteMovie(movieId) {
 export function saveMovie(movie) {
   const isNewMovie = !movie._id;
   if (isNewMovie) {
-    // console.log(movie, isNewMovie);
+    console.log(movie, isNewMovie);
+    // const body = {
+    //   title: "A",
+    //   genreId: "5c6405f16ba2b37adf5cac30",
+    //   numberInStock: "10",
+    //   dailyRentalRate: "6"
+    // };
+
     return http.post(apiEndPoint, movie);
   } else {
-    const movieInDb = {
-      title: movie.title,
-      genreId: movie.genreId,
-      numberInStock: movie.numberInStock,
-      dailyRentalRate: movie.dailyRentalRate
-    };
-    return http.put(apiEndPoint + "/" + movie._id, movieInDb);
+    const body = { ...movie };
+    delete body._id;
+    return http.put(apiEndPoint + "/" + movie._id, body);
   }
 
   //   let movieInDb = getMovie(movie._id) || {};
