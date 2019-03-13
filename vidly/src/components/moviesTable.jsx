@@ -25,27 +25,30 @@ class MoviesTable extends Component {
           />
         );
       }
-    },
-    {
-      key: "delete",
-      content: movie => {
-        const { user } = this.props;
-        if (user) {
-          if (user.isAdmin)
-            return (
-              <button
-                className="btn btn-danger btn-sm"
-                onClick={() => {
-                  this.props.onDelete(movie._id);
-                }}
-              >
-                Delete
-              </button>
-            );
-        } else return null;
-      }
     }
   ];
+
+  deleteColumn = {
+    key: "delete",
+    content: movie => (
+      <button
+        className="btn btn-danger btn-sm"
+        onClick={() => {
+          this.props.onDelete(movie._id);
+        }}
+      >
+        Delete
+      </button>
+    )
+  };
+
+  constructor() {
+    super();
+    const user = auth.getCurrentUser();
+    if (user && user.isAdmin) {
+      this.columns.push(this.deleteColumn);
+    }
+  }
 
   raiseSort = path => {
     let sortColumn = { ...this.props.sortColumn };
